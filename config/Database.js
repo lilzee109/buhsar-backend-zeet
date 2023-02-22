@@ -1,4 +1,4 @@
-import { Sequalize } from "sequalize";
+import { Sequelize } from "sequelize"
 
 const db = new Sequelize("auth_db", "root", "", {
     host: "localhost",
