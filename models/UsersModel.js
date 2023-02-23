@@ -3,7 +3,15 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-export const Products = db.define("products", {
+export const Users = db.define("users", {
+    uuid: {
+        type: DataTypes.STRING,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        validate: {
+            notEmpty: true
+        }
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -12,34 +20,21 @@ export const Products = db.define("products", {
             len: [3, 100]
         }
     },
-    keterangan: {
+    email: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
+            notEmpty: true,
+            isEmail: true
         }
     },
-    category: {
+    password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            notEmpty: true
-        }
-    },
-    price: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true
-        }
-    },
-    img: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true
+            notEmpty: true,
         }
     }
 }, {
     freezeTableName: true
-});
+})

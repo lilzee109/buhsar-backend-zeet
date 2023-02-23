@@ -10,7 +10,7 @@
 
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize("freedb_dbBuah", "freedb_data-website", "7@cW!5GTY%7bBwd", {
+const db = new Sequelize("freedb_freedb_dbBuah", "freedb_buhsar", "KVHTptWx26U?!3e", {
     host: "sql.freedb.tech",
     dialect: "mysql"
 })
