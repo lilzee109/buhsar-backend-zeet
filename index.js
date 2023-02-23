@@ -6,6 +6,7 @@ import { Users } from "./models/UsersModel.js";
 import ProductRoute from "./router/ProductRoute.js";
 import UsersRoute from "./router/UsersRoute.js";
 import session from "express-session";
+import cors from "cors";
 
 dotenv.config();
 const port = process.env.PORT || 4000;
@@ -30,6 +31,7 @@ app.use(session({
     }
 }))
 
+app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://safaaat.github.io"] }));
 app.use(express.json());
 app.use(express.urlencoded());
 
