@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import db from "./config/Database.js";
-import Products from "./models/ProductModel.js";
+// import Products from "./models/ProductModel.js";
 import ProductRoute from "./router/ProductRoute.js"
 
 dotenv.config();
