@@ -6,6 +6,7 @@ import { Users } from "./models/UsersModel.js";
 import ProductRoute from "./router/ProductRoute.js";
 import UsersRoute from "./router/UsersRoute.js";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 
 dotenv.config();
@@ -20,6 +21,9 @@ try {
 } catch (error) {
     console.error(error);
 }
+app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://safaaat.github.io"] }));
+app.use(cookieParser())
+app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     secret: process.env.SESS_SECRET,
@@ -28,9 +32,7 @@ app.use(session({
     cookie: { secure: "auto", httpOnly: true }
 }))
 
-app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://safaaat.github.io"] }));
 app.use(express.json());
-app.use(express.urlencoded());
 
 app.use(ProductRoute);
 app.use(UsersRoute);
