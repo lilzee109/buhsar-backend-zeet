@@ -25,10 +25,7 @@ app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    // cookie: {
-    //     secure: "auto",
-    //     httpOnly: true
-    // }
+    cookie: { secure: true, httpOnly: true }
 }))
 
 app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://safaaat.github.io"] }));
