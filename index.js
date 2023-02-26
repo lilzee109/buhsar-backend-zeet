@@ -16,8 +16,8 @@ const app = express();
 try {
     await db.authenticate();
     console.log("Database Connected...");
-    await Products.sync();
-    await Users.sync();
+    // await Products.sync();
+    // await Users.sync();
 } catch (error) {
     console.error(error);
 }
