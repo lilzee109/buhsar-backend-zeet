@@ -42,14 +42,18 @@ export const login = async (req, res) => {
     const match = await argon2.verify(users.password, password);
     if (!match) return res.status(400).json({ msg: "Password yang anda masukan salah" });
 
-    req.session.usersId = users.uuid;
     const uuid = users.uuid;
     const name = users.name;
     const email = users.email;
+
+    req.session.usersId = users.uuid;
+
     res.status(200).json({ uuid, name, email });
 }
 
 export const auth = async (req, res) => {
+    const { usersId } = req.session;
+    console.log(req.session.usersId, usersId)
     if (!req.session.usersId) {
         return res.status(401).json({ msg: "mohon login ke akun anda" });
     }

@@ -29,7 +29,7 @@ app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: "auto", httpOnly: true }
+    cookie: { httpOnly: true }
 }))
 
 app.use(express.json());
