@@ -11,18 +11,9 @@ const cekEmail = async (email) => {
     return users
 }
 
-const usersNoPass = async (email) => {
-    const users = await Users.findOne({
-        attributes: ["uuid", "email", "name"],
-        where: {
-            email: email
-        }
-    });
-    return users
-}
-
 export const createUsers = async (req, res) => {
-    const { email, name, password, confPassword } = req.body
+    const { email, name, password, confPassword, role } = req.body
+    console.log(password, confPassword, role)
     const users = await cekEmail(email);
 
     if (users) return res.status(400).json({ msg: "Email yang anda gunakan sudah terdaftar" })
@@ -33,7 +24,8 @@ export const createUsers = async (req, res) => {
         await Users.create({
             name: name,
             email: email,
-            password: hashPassword
+            password: hashPassword,
+            role: role
         })
         res.status(200).json({ msg: "Register Success" })
     } catch (error) {
@@ -58,9 +50,6 @@ export const login = async (req, res) => {
 }
 
 export const auth = async (req, res) => {
-    console.log(req.session.usersId)
-    console.log(req.sessionID)
-    console.log(req.session)
     if (!req.session.usersId) {
         return res.status(401).json({ msg: "mohon login ke akun anda" });
     }
