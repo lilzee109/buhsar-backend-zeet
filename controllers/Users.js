@@ -1,75 +1,33 @@
-import { Users } from "../models/UsersModel.js";
-import argon2 from "argon2";
+import User from "../models/UsersModel.js";
 
-const cekEmail = async (email) => {
-    const users = await Users.findOne({
+const cekUsers = async (email) => {
+    const users = await User.findOne({
         where: {
             email: email
         }
-    })
+    });
 
     return users
 }
 
 export const createUsers = async (req, res) => {
-    const { email, name, password, confPassword, role } = req.body
-    console.log(password, confPassword, role)
-    const users = await cekEmail(email);
+    const { email, name, password, confPassword } = req.body;
+    const Users = await cekUsers(email)
+    // Jika users name sudah terdafatar
+    if (Users) return res.status(400).json({ msg: "Email sudah digunakan" });
+    // Jika password dan confirmasi password tidak sama
+    if (password !== confPassword) return res.status(400).json({ msg: "Password dan confirmasi password tidak sama" })
 
-    if (users) return res.status(400).json({ msg: "Email yang anda gunakan sudah terdaftar" })
-    if (password !== confPassword) return res.status(400).json({ msg: "Password dan confirmasi password tidak sama" });
+    // Hash password
     const hashPassword = await argon2.hash(password);
-
     try {
-        await Users.create({
+        await User.create({
             name: name,
-            email: email,
-            password: hashPassword,
-            role: role
+            email, email,
+            password: hashPassword
         })
-        res.status(200).json({ msg: "Register Success" })
+        res.status(200).json({ msg: "Register success" })
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ error });
     }
-}
-
-export const login = async (req, res) => {
-    const { password } = req.body
-    const users = await cekEmail(req.body.email)
-
-    if (users === null) return res.status(400).json({ msg: "Email tidak terdaftar" });
-
-    const match = await argon2.verify(users.password, password);
-    if (!match) return res.status(400).json({ msg: "Password yang anda masukan salah" });
-
-    const uuid = users.uuid;
-    const name = users.name;
-    const email = users.email;
-
-    req.session.usersId = users.uuid;
-
-    res.status(200).json({ uuid, name, email });
-}
-
-export const auth = async (req, res) => {
-    const { usersId } = req.session;
-    console.log(req.session.usersId, usersId)
-    if (!req.session.usersId) {
-        return res.status(401).json({ msg: "mohon login ke akun anda" });
-    }
-    const users = await Users.findOne({
-        attributes: ["uuid", "email", "name"],
-        where: {
-            uuid: req.session.usersId
-        }
-    })
-    if (!users) return res.status(400).json({ msg: "Users tidak ditemukan" });
-    res.status(200).json(users);
-}
-
-export const logout = (req, res) => {
-    req.session.destroy((err) => {
-        if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
-        res.status(200).json({ msg: "Anda telah logout" });
-    })
 }
