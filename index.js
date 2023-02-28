@@ -3,9 +3,15 @@ import cors from "cors";
 import session from "express-session";
 import dotenv from "dotenv";
 import UsersRoute from "./router/UsersRoute.js";
+import db from "./config/Database.js";
 dotenv.config();
 
 const app = express();
+
+// (async () => {
+//     await db.sync();
+// })();
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
@@ -19,6 +25,7 @@ app.use(cors({
     credentials: true,
     origin: ["http://localhost:3000"]
 }));
+
 app.use(express.json());
 app.use(UsersRoute);
 
