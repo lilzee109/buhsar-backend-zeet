@@ -20,3 +20,17 @@ Content-Type: application/json
 
 ###
 GET http://localhost:4000/auth
+
+
+###
+POST https://orange-red-panda-veil.cyclic.app/login
+Content-Type: application/json
+
+{
+    "email": "zizi@gmail.com",
+    "password": "123456"
+}
+
+
+###
+GET https://orange-red-panda-veil.cyclic.app/auth

@@ -49,6 +49,7 @@ export const login = async (req, res) => {
 }
 
 export const auth = async (req, res) => {
+    console.log(req.session.userId)
     if (!req.session.userId) {
         return res.status(401).json({ msg: "Mohon login ke akun anda" });
     }
