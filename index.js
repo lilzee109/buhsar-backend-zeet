@@ -17,22 +17,17 @@ try {
     console.error(error);
 }
 
-app.use(session({
-    secret: process.env.SESS_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        secure: "auto",
-        httpOnly: true
-    }
-}))
-
 app.use(cors({
     credentials: true,
     origin: ["http://localhost:3000", "https://lilzee109.github.io"]
 }));
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
+app.use(session({
+    secret: process.env.SESS_SECRET,
+    resave: false,
+    saveUninitialized: true
+}))
 app.use(express.json());
 app.use(UsersRoute);
 
