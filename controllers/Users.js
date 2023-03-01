@@ -50,13 +50,13 @@ export const login = async (req, res) => {
 
 
     const sessionId = users.uuid
-    sessions[sessionId] = { email, userId: 1 };
+    sessions[sessionId] = { email };
     res.set('Set-Cookie', `session=${sessionId}`);
     res.status(200).json({ uuid, email, name })
 }
 
 export const auth = async (req, res) => {
-    let sessionId = req.headers.cookie.split('=')[1];
+    let sessionId = req.headers.cookie
     const userSession = sessions[sessionId]
     console.log(req.session.userId, userSession)
     if (!req.session.userId) {
