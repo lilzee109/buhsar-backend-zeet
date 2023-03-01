@@ -45,11 +45,16 @@ export const login = async (req, res) => {
     const uuid = users.uuid
     const email = users.email
     const name = users.name
+
+
+    const sessionId = users.uuid
+    res.set('Set-Cookie', `session=${sessionId}`);
     res.status(200).json({ uuid, email, name })
 }
 
 export const auth = async (req, res) => {
-    console.log(req.session.userId)
+    let data = req.headers.cookie
+    console.log(req.session.userId, data)
     if (!req.session.userId) {
         return res.status(401).json({ msg: "Mohon login ke akun anda" });
     }
