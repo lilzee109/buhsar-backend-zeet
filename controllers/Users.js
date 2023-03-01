@@ -1,6 +1,8 @@
 import User from "../models/UsersModel.js";
 import argon2 from "argon2";
 
+const sessions = {};
+
 const cekUsers = async (email) => {
     const users = await User.findOne({
         where: {
@@ -48,13 +50,15 @@ export const login = async (req, res) => {
 
 
     const sessionId = users.uuid
+    sessions[sessionId] = { email, userId: 1 };
     res.set('Set-Cookie', `session=${sessionId}`);
     res.status(200).json({ uuid, email, name })
 }
 
 export const auth = async (req, res) => {
-    let data = req.headers.cookie
-    console.log(req.session.userId, data)
+    let sessionId = req.headers.cookie.split('=')[1];
+    const userSession = sessions[sessionId]
+    console.log(req.session.userId, userSession)
     if (!req.session.userId) {
         return res.status(401).json({ msg: "Mohon login ke akun anda" });
     }
