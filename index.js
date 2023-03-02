@@ -26,7 +26,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        secure: "auto"
+    }
 }))
 app.use(express.json());
 app.use(UsersRoute);
